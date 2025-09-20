@@ -44,7 +44,7 @@ class Display(tkinter.Tk):
         #self.overrideredirect(True)
 
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
+        self.columnconfigure(1, weight=1, minsize=800/4)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
