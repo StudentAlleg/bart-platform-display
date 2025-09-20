@@ -17,8 +17,8 @@ class StopTripData:
         self.stop = stop
         self.stop_times = dict()
 
-    def add(self, trip_id:str, headsign: str, arrival_time: int, departure_time):
-        self.stop_times[trip_id] = TripData(trip_id, headsign, arrival_time, departure_time)
+    def add(self, trip_id:str, route_id: str, headsign: str, arrival_time: int, departure_time):
+        self.stop_times[trip_id] = TripData(trip_id, route_id, headsign, arrival_time, departure_time)
     def update(self, trip_id: str, new_arrival: int, new_departure: int) -> None:
         try:
             self.stop_times[trip_id].set_arrival_time(new_arrival)

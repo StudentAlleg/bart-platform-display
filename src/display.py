@@ -7,7 +7,7 @@ import requests
 from google.transit import gtfs_realtime_pb2
 from pygtfs import Schedule
 
-
+from src import routedata
 from src.stoptripdata import StopTripData
 from src.TripData import TripData
 from src.UtilTime import UtilTime
@@ -71,11 +71,16 @@ class Display(tkinter.Tk):
 
         self.update_info(True)
 
+    def set_watched_stop(self, watched_stop: str):
+        self.watched_stop = watched_stop
+
+
     def update_info(self, first: bool = False):
         feed: gtfs_realtime_pb2.FeedMessage = gtfs_realtime_pb2.FeedMessage() # type: ignore
 
         with requests.get(BART_TRIP_UPDATE, allow_redirects=True) as response:
             feed.ParseFromString(response.content)
+            #todo remove
             f = open("../feed.txt", "w")
             f.write(str(feed))
             f.close()
@@ -120,7 +125,7 @@ class Display(tkinter.Tk):
         working_trips_text: str = ""
         for headsign, trips in headsign_trips.items():
             trips: list[TripData] = trips
-            working_headsign_text += headsign.upper() + "\nX CAR TRAIN\n"
+            working_headsign_text += headsign.upper() + f"\n{routedata.BartRouteData.car_lengths(trips[0].route_id)} CAR TRAIN\n"
             for i in range(2):
                 working_trips_text += str(int(UtilTime.relative_seconds(trips[i].get_departure_time())/60)) + ", "
             working_trips_text = working_trips_text.rstrip(", ")
@@ -141,9 +146,9 @@ class Display(tkinter.Tk):
             self.arrival_text.set("")
             self.arrival_desc_text.set("")
             return
-
+        route_id: str = trip.route_id
         self.arrival_text.set(trip.get_headsign().replace("/", "/\n").upper())
-        self.arrival_desc_text.set("X-CAR, YL-LINE")
+        self.arrival_desc_text.set(f"{routedata.BartRouteData.car_lengths(route_id)}-CAR, {routedata.BartRouteData.short_line_color(route_id)}-LINE")
 
         #todo car, line table
         #todo label for cars?

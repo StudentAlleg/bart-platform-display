@@ -1,11 +1,13 @@
 class TripData():
     trip_id: str
+    route_id: str
     headsign: str
     arrival_time: int
     departure_time: int
 
-    def __init__(self, trip_id, headsign = "Unknown Headsign", arrival_time = -1, departure_time = -1):
+    def __init__(self, trip_id, route_id, headsign = "Unknown Headsign", arrival_time = -1, departure_time = -1):
         self.trip_id = trip_id
+        self.route_id = route_id
         self.headsign = headsign
         self.arrival_time = arrival_time
         self.departure_time = departure_time
