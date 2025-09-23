@@ -7,6 +7,7 @@ import tkinter
 from http.client import HTTPException
 from tkinter import ttk, StringVar
 import threading
+from typing import assert_type
 
 import pygtfs
 import requests
@@ -39,33 +40,39 @@ app = Flask(__name__)
 
 @app.get("/stop/")
 def get_stop():
-    print("GET", file=sys.stdout, flush=True)
     return jsonify({
-        "stop": watched_stop
+        "stop_id": root.watched_stop
     })
+
+@app.get("/stops/")
+def get_stops():
+    return jsonify(stop_list)
+
 @app.put("/stop/<string:stop_id>")
 def put_stop(stop_id: str = None):
     root.set_watched_stop(stop_id)
     return jsonify({
-        "stop": root.watched_stop
-    })
-@app.errorhandler(Exception)
-def handle_exception(e: Exception):
-    if isinstance(e, HTTPException):
-        return e
-    if isinstance(e, InternalServerError):
-        return jsonify({
-        "error": str(e.original_exception)
-    })
-
-    return jsonify({
-        "error": str(e)
+        "stop_id": root.watched_stop
     })
 
 def get_schedule() -> Schedule:
     schedule: Schedule = pygtfs.Schedule(":memory:")
     add_bart_schedule(schedule)
     return schedule
+
+
+def get_stops_info(schedule: Schedule) -> list[dict[str, str]]:
+    stop_list: list[dict[str, str]] = list()
+    for stop in schedule.stops:
+        stop: gtfs_entities.Stop = stop
+        stop_list.append(
+            {
+                "stop_id": stop.stop_id,
+                "stop_name": stop.stop_name
+            }
+        )
+    return stop_list
+
 
 def default_stop_trip_info(schedule: Schedule) -> dict[str, StopTripData]:
     stop_trip_info: dict[str, StopTripData] = dict()
@@ -104,6 +111,7 @@ def app_main():
 
 if __name__ == "__main__":
     schedule: Schedule = get_schedule()
+    stop_list: list[dict[str, str]] = get_stops_info(schedule)
     stop_trip_info: dict[str, StopTripData] = default_stop_trip_info(schedule)
     root: Display = Display(watched_stop, schedule, stop_trip_info)
     #app_main()
