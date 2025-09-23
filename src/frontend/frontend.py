@@ -3,7 +3,7 @@ import json
 import requests
 import tkinter
 from tkinter import ttk, StringVar
-from tkinter.messagebox import showwarning
+from tkinter.messagebox import showwarning, showerror
 
 
 class Frontend(tkinter.Tk):
@@ -44,14 +44,16 @@ class Frontend(tkinter.Tk):
         self.port_box.grid(column=3, row=0)
 
         self.refresh_button = ttk.Button(self, text="Refresh", command=self.refresh)
-        self.refresh_button.grid(column=1, row=1, columnspan=4)
+        self.refresh_button.grid(column=0, row=1, columnspan=4, sticky=tkinter.W)
 
         self.stop_id_var = StringVar()
         self.stop_selector_box = ttk.Combobox(self, textvariable=self.stop_id_var, state="readonly", width=40)
-        self.stop_selector_box.grid(column=1, row=2, columnspan=4)
+        self.stop_selector_box.grid(column=0, row=2, columnspan=4, sticky=tkinter.W)
 
         self.submit_button = ttk.Button(self, text="Submit", command=self.submit)
-        self.submit_button.grid(column=0, row=3, columnspan=4)
+        self.submit_button.grid(column=0, row=3, columnspan=4, sticky=tkinter.W)
+
+        self.title("Bart Display Controller")
 
         self.refresh()
 
@@ -62,33 +64,40 @@ class Frontend(tkinter.Tk):
         return ip_address + path + "/"
 
     def refresh(self):
-        response: requests.Response = requests.get(self.get_url("stops"))
-        if (response.status_code != 200):
-            showwarning(f"Error: {response.status_code}", f"{response.content}")
-        self.stop_list = json.loads(response.content)
+        try:
+            response: requests.Response = requests.get(self.get_url("stops"))
+            if (response.status_code != 200):
+                showwarning(f"Error: {response.status_code}", f"{response.content}")
+            self.stop_list = json.loads(response.content)
 
-        stop_id_response: requests.Response = requests.get(self.get_url("stop"))
-        if (stop_id_response.status_code != 200):
-            showwarning(f"Error: {stop_id_response.status_code}", f"{stop_id_response.content}")
+            stop_id_response: requests.Response = requests.get(self.get_url("stop"))
+            if (stop_id_response.status_code != 200):
+                showwarning(f"Error: {stop_id_response.status_code}", f"{stop_id_response.content}")
 
-        watched_stop_id: str = json.loads(stop_id_response.content)["stop_id"]
+            watched_stop_id: str = json.loads(stop_id_response.content)["stop_id"]
 
-        stop_selector_values: list[str] = list()
-        stop_selected: str = "UNKNOWN"
-        for stop_info in self.stop_list:
-            selector_val: str = f"{stop_info["stop_id"]} ({stop_info["stop_name"]})"
-            stop_selector_values.append(selector_val)
-            if stop_info["stop_id"] == watched_stop_id:
-                stop_selected = selector_val
+            stop_selector_values: list[str] = list()
+            stop_selected: str = "UNKNOWN"
+            for stop_info in self.stop_list:
+                selector_val: str = f"{stop_info["stop_id"]} ({stop_info["stop_name"]})"
+                stop_selector_values.append(selector_val)
+                if stop_info["stop_id"] == watched_stop_id:
+                    stop_selected = selector_val
 
-        self.stop_selector_box["values"] = stop_selector_values
-        self.stop_id_var.set(stop_selected)
-        self.stop_selector_box.set(stop_selected)
+            self.stop_selector_box["values"] = stop_selector_values
+            self.stop_id_var.set(stop_selected)
+            self.stop_selector_box.set(stop_selected)
+        except Exception as e:
+            showerror("Error", str(e))
+
 
     def submit(self):
-        response: requests.Response = requests.put(self.get_url("stop") + self.get_stop_id_from_selector())
-        if response.status_code != 200:
-            showwarning(f"Error: {response.status_code}", f"{response.content}")
+        try:
+            response: requests.Response = requests.put(self.get_url("stop") + self.get_stop_id_from_selector())
+            if response.status_code != 200:
+                showwarning(f"Error: {response.status_code}", f"{response.content}")
+        except Exception as e:
+            showerror("Error", str(e))
 
 
     def get_stop_id_from_selector(self) -> str:

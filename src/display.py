@@ -58,14 +58,14 @@ class Display(tkinter.Tk):
 
         self.arrival_text: StringVar = tkinter.StringVar()
         self.arrival_text.set("ANTIOCH")
-        self.arrival_label = ttk.Label(self, textvariable=self.arrival_text, anchor="s", justify="center", background="black", foreground="red", font=("Helvetica", 72))
+        self.arrival_label = ttk.Label(self, textvariable=self.arrival_text, anchor="s", justify="center", background="black", foreground="red", font=("Helvetica", 72), wraplength=800)
         self.arrival_label.grid(column=0, columnspan=2, row=0, sticky=tkinter.S, ipadx=100)
         self.arrival_label.grid_remove()
 
 
         self.arrival_desc_text: StringVar = StringVar()
         self.arrival_desc_text.set("YL-Line")
-        self.arrival_desc_label = ttk.Label(self, textvariable=self.arrival_desc_text, anchor="n", justify="center", background="black", foreground="red", font=("Helvetica", 48))
+        self.arrival_desc_label = ttk.Label(self, textvariable=self.arrival_desc_text, anchor="n", justify="center", background="black", foreground="red", font=("Helvetica", 48), wraplength=800)
         self.arrival_desc_label.grid(column=0, columnspan=2, row=1, sticky=tkinter.N)
         self.arrival_desc_label.grid_remove()
 
@@ -147,7 +147,7 @@ class Display(tkinter.Tk):
             self.arrival_desc_text.set("")
             return
         route_id: str = trip.route_id
-        self.arrival_text.set(trip.get_headsign().replace("/", "/\n").upper())
+        self.arrival_text.set(trip.get_headsign().upper())
         self.arrival_desc_text.set(f"{routedata.BartRouteData.car_lengths(route_id)}-CAR, {routedata.BartRouteData.short_line_color(route_id)}-LINE")
 
         #todo car, line table
