@@ -109,7 +109,7 @@ def app_main():
 
 if __name__ == "__main__":
     schedule: Schedule = get_schedule()
-    gtfs.update_gtfs_db(schedule)
+    #gtfs.update_gtfs_db(schedule)
     stop_list: list[dict[str, str]] = get_stops_info(schedule)
     stop_trip_info: dict[str, StopTripData] = default_stop_trip_info(schedule)
     root: Display = Display(watched_stop, schedule, stop_trip_info)

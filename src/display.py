@@ -12,9 +12,9 @@ from utiltime import UtilTime
 
 BART_TRIP_UPDATE: str = 'https://api.bart.gov/gtfsrt/tripupdate.aspx'
 FONT: str = "Comic Sans MS"
-SMALL_FRONT_SIZE: int = 68
-DESCRIPTION_FONT_SIZE: int = 88
-ARRIVAL_FONT_SIZE: int = 112
+SMALL_FRONT_SIZE: int = 48
+DESCRIPTION_FONT_SIZE: int = 72
+ARRIVAL_FONT_SIZE: int = 96
 
 class Display(tkinter.Tk):
 
@@ -39,16 +39,16 @@ class Display(tkinter.Tk):
         self.schedule = schedule
         self.stop_trip_info = stop_trip_info
 
-        #self.geometry("800x480")
-        #self.minsize(800, 480)
-        #self.maxsize(800, 480)
-        #
+        self.geometry("1024x768")
+        self.minsize(1024, 768)
+        self.maxsize(1024, 768)
+
         #self.overrideredirect(True)
         self.configure(background="black")
-        self.attributes("-fullscreen", True)
+        #self.attributes("-fullscreen", True)
 
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1, minsize=self.winfo_width()/3)
+        self.columnconfigure(1, weight=1, minsize=1024/4)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
@@ -62,14 +62,14 @@ class Display(tkinter.Tk):
 
         self.arrival_text: StringVar = tkinter.StringVar()
         self.arrival_text.set("ANTIOCH")
-        self.arrival_label = ttk.Label(self, textvariable=self.arrival_text, anchor="s", justify="center", background="black", foreground="red", font=(FONT, ARRIVAL_FONT_SIZE), wraplength=self.winfo_width())
+        self.arrival_label = ttk.Label(self, textvariable=self.arrival_text, anchor="s", justify="center", background="black", foreground="red", font=(FONT, ARRIVAL_FONT_SIZE), wraplength=1024)
         self.arrival_label.grid(column=0, columnspan=2, row=0, sticky=tkinter.S)
         self.arrival_label.grid_remove()
 
 
         self.arrival_desc_text: StringVar = StringVar()
         self.arrival_desc_text.set("YL-Line")
-        self.arrival_desc_label = ttk.Label(self, textvariable=self.arrival_desc_text, anchor="n", justify="center", background="black", foreground="red", font=(FONT, DESCRIPTION_FONT_SIZE), wraplength=self.winfo_width())
+        self.arrival_desc_label = ttk.Label(self, textvariable=self.arrival_desc_text, anchor="n", justify="center", background="black", foreground="red", font=(FONT, DESCRIPTION_FONT_SIZE), wraplength=1024)
         self.arrival_desc_label.grid(column=0, columnspan=2, row=1, sticky=tkinter.N)
         self.arrival_desc_label.grid_remove()
 
