@@ -5,3 +5,4 @@ data
 .idea
 *.code-workspace
 feed.txt
+*.sqlite

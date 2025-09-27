@@ -105,7 +105,7 @@ def add_bart_schedule(schedule: Schedule, fetch_from_url: bool = False) -> None:
     pygtfs.append_feed(schedule, BART_GTFS_FILE)
 
 def app_main():
-    app.run(debug=True, use_reloader=False)
+    app.run(host="0.0.0.0",debug=False, use_reloader=False, use_evalex=False)
 
 if __name__ == "__main__":
     schedule: Schedule = get_schedule()
