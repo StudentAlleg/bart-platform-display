@@ -66,12 +66,12 @@ class Frontend(tkinter.Tk):
     def refresh(self):
         try:
             response: requests.Response = requests.get(self.get_url("stops"))
-            if (response.status_code != 200):
+            if response.status_code != 200:
                 showwarning(f"Error: {response.status_code}", f"{response.content}")
             self.stop_list = json.loads(response.content)
 
             stop_id_response: requests.Response = requests.get(self.get_url("stop"))
-            if (stop_id_response.status_code != 200):
+            if stop_id_response.status_code != 200:
                 showwarning(f"Error: {stop_id_response.status_code}", f"{stop_id_response.content}")
 
             watched_stop_id: str = json.loads(stop_id_response.content)["stop_id"]

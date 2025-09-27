@@ -13,6 +13,7 @@ from src.TripData import TripData
 from src.UtilTime import UtilTime
 
 BART_TRIP_UPDATE: str = 'https://api.bart.gov/gtfsrt/tripupdate.aspx'
+FONT: str = "Comic Sans MS"
 
 class Display(tkinter.Tk):
 
@@ -49,23 +50,23 @@ class Display(tkinter.Tk):
         self.rowconfigure(1, weight=1)
 
         self.headsigns_text = StringVar()
-        self.headsigns_label = ttk.Label(self, textvariable=self.headsigns_text, anchor="nw", justify="left", background="black", foreground="red", font=("Helvetica", 28))
+        self.headsigns_label = ttk.Label(self, textvariable=self.headsigns_text, anchor="nw", justify="left", background="black", foreground="red", font=(FONT, 28))
         self.headsigns_label.grid(column=0, row=0, rowspan=2, sticky=tkinter.NW)
 
         self.times_text = StringVar()
-        self.times_label = ttk.Label(self, textvariable=self.times_text, anchor="ne", justify="right", background="black", foreground="red", font=("Helvetica", 28))
+        self.times_label = ttk.Label(self, textvariable=self.times_text, anchor="ne", justify="right", background="black", foreground="red", font=(FONT, 28))
         self.times_label.grid(column=1, row=0, rowspan=2, sticky=tkinter.NE)
 
         self.arrival_text: StringVar = tkinter.StringVar()
         self.arrival_text.set("ANTIOCH")
-        self.arrival_label = ttk.Label(self, textvariable=self.arrival_text, anchor="s", justify="center", background="black", foreground="red", font=("Helvetica", 72), wraplength=800)
+        self.arrival_label = ttk.Label(self, textvariable=self.arrival_text, anchor="s", justify="center", background="black", foreground="red", font=(FONT, 72), wraplength=800)
         self.arrival_label.grid(column=0, columnspan=2, row=0, sticky=tkinter.S, ipadx=100)
         self.arrival_label.grid_remove()
 
 
         self.arrival_desc_text: StringVar = StringVar()
         self.arrival_desc_text.set("YL-Line")
-        self.arrival_desc_label = ttk.Label(self, textvariable=self.arrival_desc_text, anchor="n", justify="center", background="black", foreground="red", font=("Helvetica", 48), wraplength=800)
+        self.arrival_desc_label = ttk.Label(self, textvariable=self.arrival_desc_text, anchor="n", justify="center", background="black", foreground="red", font=(FONT, 48), wraplength=800)
         self.arrival_desc_label.grid(column=0, columnspan=2, row=1, sticky=tkinter.N)
         self.arrival_desc_label.grid_remove()
 
@@ -149,7 +150,4 @@ class Display(tkinter.Tk):
         route_id: str = trip.route_id
         self.arrival_text.set(trip.get_headsign().upper())
         self.arrival_desc_text.set(f"{routedata.BartRouteData.car_lengths(route_id)}-CAR, {routedata.BartRouteData.short_line_color(route_id)}-LINE")
-
-        #todo car, line table
-        #todo label for cars?
 

@@ -1,26 +1,14 @@
-import asyncio
 import datetime
 import faulthandler
-import sys
-import time
-import tkinter
-from http.client import HTTPException
-from tkinter import ttk, StringVar
 import threading
-from typing import assert_type
 
 import pygtfs
 import requests
-from flask import Flask, request, jsonify
-from google.transit import gtfs_realtime_pb2
+from flask import Flask, jsonify
 from pygtfs import Schedule
 from pygtfs import gtfs_entities
-from pygtfs.gtfs_entities import Trip
-from werkzeug.exceptions import InternalServerError
 
 from src.stoptripdata import StopTripData
-from src.TripData import TripData
-from src.UtilTime import UtilTime
 from src.display import Display
 
 faulthandler.enable()
