@@ -12,9 +12,9 @@ from utiltime import UtilTime
 
 BART_TRIP_UPDATE: str = 'https://api.bart.gov/gtfsrt/tripupdate.aspx'
 FONT: str = "Comic Sans MS"
-SMALL_FRONT_SIZE: int = 72
-DESCRIPTION_FONT_SIZE: int = 96
-ARRIVAL_FONT_SIZE: int = 128
+SMALL_FRONT_SIZE: int = 68
+DESCRIPTION_FONT_SIZE: int = 88
+ARRIVAL_FONT_SIZE: int = 112
 
 class Display(tkinter.Tk):
 
@@ -48,7 +48,7 @@ class Display(tkinter.Tk):
         self.attributes("-fullscreen", True)
 
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1, minsize=self.winfo_width()/4)
+        self.columnconfigure(1, weight=1, minsize=self.winfo_width()/3)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
@@ -63,7 +63,7 @@ class Display(tkinter.Tk):
         self.arrival_text: StringVar = tkinter.StringVar()
         self.arrival_text.set("ANTIOCH")
         self.arrival_label = ttk.Label(self, textvariable=self.arrival_text, anchor="s", justify="center", background="black", foreground="red", font=(FONT, ARRIVAL_FONT_SIZE), wraplength=self.winfo_width())
-        self.arrival_label.grid(column=0, columnspan=2, row=0, sticky=tkinter.S, ipadx=100)
+        self.arrival_label.grid(column=0, columnspan=2, row=0, sticky=tkinter.S)
         self.arrival_label.grid_remove()
 
 
@@ -113,7 +113,7 @@ class Display(tkinter.Tk):
         self.after(30*1000, self.update_info, False)
 
     def update_display(self):
-        headsign_trips: dict[str, list[TripData]] = self.stop_trip_info[self.watched_stop].get_headsign_trips(120)
+        headsign_trips: dict[str, list[TripData]] = self.stop_trip_info[self.watched_stop].get_headsign_trips(60)
         if len(headsign_trips) > 0:
             _, trips = list(headsign_trips.items())[0]
             if len(trips) > 0:
