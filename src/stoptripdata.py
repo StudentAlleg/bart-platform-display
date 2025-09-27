@@ -1,11 +1,7 @@
-import time
-from typing import Tuple
-
 import pygtfs.gtfs_entities
-from google.transit import gtfs_realtime_pb2
 
-from src.TripData import TripData
-from src.UtilTime import UtilTime
+from tripdata import TripData
+from utiltime import UtilTime
 
 
 class StopTripData:

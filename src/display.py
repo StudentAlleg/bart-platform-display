@@ -1,16 +1,14 @@
-import time
 import tkinter
-from enum import Enum
 from tkinter import ttk, StringVar
 
 import requests
 from google.transit import gtfs_realtime_pb2
 from pygtfs import Schedule
 
-from src import routedata
-from src.stoptripdata import StopTripData
-from src.TripData import TripData
-from src.UtilTime import UtilTime
+from routedata import BartRouteData
+from stoptripdata import StopTripData
+from tripdata import TripData
+from utiltime import UtilTime
 
 BART_TRIP_UPDATE: str = 'https://api.bart.gov/gtfsrt/tripupdate.aspx'
 FONT: str = "Comic Sans MS"
@@ -126,7 +124,7 @@ class Display(tkinter.Tk):
         working_trips_text: str = ""
         for headsign, trips in headsign_trips.items():
             trips: list[TripData] = trips
-            working_headsign_text += headsign.upper() + f"\n{routedata.BartRouteData.car_lengths(trips[0].route_id)} CAR TRAIN\n"
+            working_headsign_text += headsign.upper() + f"\n{BartRouteData.car_lengths(trips[0].route_id)} CAR TRAIN\n"
             for i in range(2):
                 working_trips_text += str(int(UtilTime.relative_seconds(trips[i].get_departure_time())/60)) + ", "
             working_trips_text = working_trips_text.rstrip(", ")
@@ -149,5 +147,5 @@ class Display(tkinter.Tk):
             return
         route_id: str = trip.route_id
         self.arrival_text.set(trip.get_headsign().upper())
-        self.arrival_desc_text.set(f"{routedata.BartRouteData.car_lengths(route_id)}-CAR, {routedata.BartRouteData.short_line_color(route_id)}-LINE")
+        self.arrival_desc_text.set(f"{BartRouteData.car_lengths(route_id)}-CAR, {BartRouteData.short_line_color(route_id)}-LINE")
 

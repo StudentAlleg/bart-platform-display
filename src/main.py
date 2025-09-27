@@ -8,8 +8,8 @@ from flask import Flask, jsonify
 from pygtfs import Schedule
 from pygtfs import gtfs_entities
 
-from src.stoptripdata import StopTripData
-from src.display import Display
+from stoptripdata import StopTripData
+from display import Display
 
 faulthandler.enable()
 
