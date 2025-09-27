@@ -11,7 +11,7 @@ from tripdata import TripData
 from utiltime import UtilTime
 
 BART_TRIP_UPDATE: str = 'https://api.bart.gov/gtfsrt/tripupdate.aspx'
-FONT: str = "Comic Sans MS"
+FONT: str = "Helvetica" #"Comic Sans MS"
 SMALL_FRONT_SIZE: int = 56
 DESCRIPTION_FONT_SIZE: int = 72
 ARRIVAL_FONT_SIZE: int = 96
@@ -19,7 +19,6 @@ ARRIVAL_FONT_SIZE: int = 96
 class Display(tkinter.Tk):
 
     schedule: Schedule
-    #todo setter
     watched_stop: str
     stop_trip_info: dict[str, StopTripData]
 
@@ -48,7 +47,7 @@ class Display(tkinter.Tk):
         self.attributes("-fullscreen", True)
 
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1, minsize=1024/4)
+        self.columnconfigure(1, weight=1, minsize=1024/3)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
