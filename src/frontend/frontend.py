@@ -31,7 +31,7 @@ class Frontend(tkinter.Tk):
         self.ip_label.grid(column=0, row=0)
 
         self.ip_var = StringVar()
-        self.ip_var.set("http://127.0.0.1")
+        self.ip_var.set("http://display")
         self.ip_box = ttk.Entry(self, textvariable=self.ip_var)
         self.ip_box.grid(column=1, row=0)
 
@@ -79,7 +79,7 @@ class Frontend(tkinter.Tk):
             stop_selector_values: list[str] = list()
             stop_selected: str = "UNKNOWN"
             for stop_info in self.stop_list:
-                selector_val: str = f"{stop_info["stop_id"]} ({stop_info["stop_name"]})"
+                selector_val: str = f"{stop_info['stop_id']} ({stop_info['stop_name']})"
                 stop_selector_values.append(selector_val)
                 if stop_info["stop_id"] == watched_stop_id:
                     stop_selected = selector_val
