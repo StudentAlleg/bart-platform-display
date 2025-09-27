@@ -45,7 +45,7 @@ def put_stop(stop_id: str = None):
 
 def get_schedule() -> Schedule:
     schedule: Schedule = pygtfs.Schedule(":memory:")
-    add_bart_schedule(schedule)
+    add_bart_schedule(schedule, True)
     return schedule
 
 
