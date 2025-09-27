@@ -68,6 +68,8 @@ class Display(tkinter.Tk):
         self.arrival_desc_label.grid(column=0, columnspan=2, row=1, sticky=tkinter.N)
         self.arrival_desc_label.grid_remove()
 
+        self.title("Bart Display")
+
         self.update_info(True)
 
     def set_watched_stop(self, watched_stop: str):

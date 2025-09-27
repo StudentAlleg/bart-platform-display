@@ -77,7 +77,7 @@ def default_stop_trip_info(schedule: Schedule) -> dict[str, StopTripData]:
         headsign: str = stop_time.stop_headsign
         if (headsign is None):
             headsign = stop_time.trip.trip_headsign
-        print(f"{stop_time.trip_id} {stop_time.stop_id} {headsign}")
+        #print(f"{stop_time.trip_id} {stop_time.stop_id} {headsign}")
         stop_trip_info[stop_time.stop_id].add(stop_time.trip_id, stop_time.trip.route_id, headsign, arrival_time, departure_time)
     return stop_trip_info
 
