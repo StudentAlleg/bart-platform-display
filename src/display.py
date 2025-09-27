@@ -12,6 +12,9 @@ from utiltime import UtilTime
 
 BART_TRIP_UPDATE: str = 'https://api.bart.gov/gtfsrt/tripupdate.aspx'
 FONT: str = "Comic Sans MS"
+SMALL_FRONT_SIZE: int = 72
+DESCRIPTION_FONT_SIZE: int = 96
+ARRIVAL_FONT_SIZE: int = 128
 
 class Display(tkinter.Tk):
 
@@ -36,35 +39,37 @@ class Display(tkinter.Tk):
         self.schedule = schedule
         self.stop_trip_info = stop_trip_info
 
-        self.geometry("800x480")
-        self.minsize(800, 480)
-        self.maxsize(800, 480)
-        self.configure(background="black")
+        #self.geometry("800x480")
+        #self.minsize(800, 480)
+        #self.maxsize(800, 480)
+        #
         #self.overrideredirect(True)
+        self.configure(background="black")
+        self.attributes("-fullscreen", True)
 
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1, minsize=800/4)
+        self.columnconfigure(1, weight=1, minsize=self.winfo_width()/4)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
         self.headsigns_text = StringVar()
-        self.headsigns_label = ttk.Label(self, textvariable=self.headsigns_text, anchor="nw", justify="left", background="black", foreground="red", font=(FONT, 28))
+        self.headsigns_label = ttk.Label(self, textvariable=self.headsigns_text, anchor="nw", justify="left", background="black", foreground="red", font=(FONT, SMALL_FRONT_SIZE))
         self.headsigns_label.grid(column=0, row=0, rowspan=2, sticky=tkinter.NW)
 
         self.times_text = StringVar()
-        self.times_label = ttk.Label(self, textvariable=self.times_text, anchor="ne", justify="right", background="black", foreground="red", font=(FONT, 28))
+        self.times_label = ttk.Label(self, textvariable=self.times_text, anchor="ne", justify="right", background="black", foreground="red", font=(FONT, SMALL_FRONT_SIZE))
         self.times_label.grid(column=1, row=0, rowspan=2, sticky=tkinter.NE)
 
         self.arrival_text: StringVar = tkinter.StringVar()
         self.arrival_text.set("ANTIOCH")
-        self.arrival_label = ttk.Label(self, textvariable=self.arrival_text, anchor="s", justify="center", background="black", foreground="red", font=(FONT, 72), wraplength=800)
+        self.arrival_label = ttk.Label(self, textvariable=self.arrival_text, anchor="s", justify="center", background="black", foreground="red", font=(FONT, ARRIVAL_FONT_SIZE), wraplength=self.winfo_width())
         self.arrival_label.grid(column=0, columnspan=2, row=0, sticky=tkinter.S, ipadx=100)
         self.arrival_label.grid_remove()
 
 
         self.arrival_desc_text: StringVar = StringVar()
         self.arrival_desc_text.set("YL-Line")
-        self.arrival_desc_label = ttk.Label(self, textvariable=self.arrival_desc_text, anchor="n", justify="center", background="black", foreground="red", font=(FONT, 48), wraplength=800)
+        self.arrival_desc_label = ttk.Label(self, textvariable=self.arrival_desc_text, anchor="n", justify="center", background="black", foreground="red", font=(FONT, DESCRIPTION_FONT_SIZE), wraplength=self.winfo_width())
         self.arrival_desc_label.grid(column=0, columnspan=2, row=1, sticky=tkinter.N)
         self.arrival_desc_label.grid_remove()
 
@@ -128,7 +133,11 @@ class Display(tkinter.Tk):
             trips: list[TripData] = trips
             working_headsign_text += headsign.upper() + f"\n{BartRouteData.car_lengths(trips[0].route_id)} CAR TRAIN\n"
             for i in range(2):
-                working_trips_text += str(int(UtilTime.relative_seconds(trips[i].get_departure_time())/60)) + ", "
+                try:
+                    working_trips_text += str(int(UtilTime.relative_seconds(trips[i].get_departure_time())/60)) + ", "
+                except IndexError:
+                    working_trips_text += ", "
+                    continue
             working_trips_text = working_trips_text.rstrip(", ")
             working_trips_text += " MIN\n\n"
         self.headsigns_text.set(working_headsign_text)
