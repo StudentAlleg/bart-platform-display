@@ -1,3 +1,4 @@
+import sys
 import tkinter
 from tkinter import ttk, StringVar
 
@@ -45,6 +46,7 @@ class Display(tkinter.Tk):
         #self.overrideredirect(True)
         self.configure(background="black")
         self.attributes("-fullscreen", True)
+        self.config(cursor="none")
 
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1, minsize=1024/3)
@@ -81,31 +83,34 @@ class Display(tkinter.Tk):
 
 
     def update_info(self, first: bool = False):
-        feed: gtfs_realtime_pb2.FeedMessage = gtfs_realtime_pb2.FeedMessage() # type: ignore
+        try:
+            feed: gtfs_realtime_pb2.FeedMessage = gtfs_realtime_pb2.FeedMessage() # type: ignore
 
-        with requests.get(BART_TRIP_UPDATE, allow_redirects=True) as response:
-            feed.ParseFromString(response.content)
-            #todo remove
-            f = open("../feed.txt", "w")
-            f.write(str(feed))
-            f.close()
-            for entity in feed.entity:
-                if entity.HasField("trip_update"):
-                    if hasattr(entity.trip_update, "stop_time_update"):
-                        for trip_update in entity.trip_update.stop_time_update:
-                            stop_id: str = trip_update.stop_id
-                            #TODO set headsign/add as
-                            arrival_time: int = trip_update.arrival.time
+            with requests.get(BART_TRIP_UPDATE, allow_redirects=True) as response:
+                feed.ParseFromString(response.content)
+                #todo remove
+                f = open("../feed.txt", "w")
+                f.write(str(feed))
+                f.close()
+                for entity in feed.entity:
+                    if entity.HasField("trip_update"):
+                        if hasattr(entity.trip_update, "stop_time_update"):
+                            for trip_update in entity.trip_update.stop_time_update:
+                                stop_id: str = trip_update.stop_id
+                                #TODO set headsign/add as
+                                arrival_time: int = trip_update.arrival.time
 
-                            departure_time: int = trip_update.departure.time
-                            if stop_id not in self.stop_trip_info:
-                                #update for an unknown station i.e. W40-1
-                                continue
-                            if entity.id not in (self.stop_trip_info[stop_id]).stop_times:
-                                #todo add this new trip in
-                                pass
-                            self.stop_trip_info[stop_id].update(entity.id, arrival_time, departure_time)
-        #display_info(schedule, StopTripInfo)
+                                departure_time: int = trip_update.departure.time
+                                if stop_id not in self.stop_trip_info:
+                                    #update for an unknown station i.e. W40-1
+                                    continue
+                                if entity.id not in (self.stop_trip_info[stop_id]).stop_times:
+                                    #todo add this new trip in
+                                    pass
+                                self.stop_trip_info[stop_id].update(entity.id, arrival_time, departure_time)
+            #display_info(schedule, StopTripInfo)
+        except Exception as e:
+            print(f"Exception {e}", sys.stderr)
         print("Updated data")
         if first:
             self.after(250, self.update_display)

@@ -1,8 +1,10 @@
 import datetime
 import faulthandler
+import multiprocessing
 import sys
 import threading
 import time
+import tkinter
 from tkinter import TclError
 
 import pygtfs
@@ -12,6 +14,7 @@ from pygtfs import Schedule
 from pygtfs import gtfs_entities
 
 import gtfs
+from loading import Loading
 from stoptripdata import StopTripData
 from display import Display
 
@@ -27,6 +30,9 @@ PLEASANT_HILL_2: str = "C50-2"
 
 watched_stop: str = PLEASANT_HILL_1
 
+schedule: Schedule
+stop_list: list[dict[str, str]]
+stop_trip_info: dict[str, StopTripData]
 
 app = Flask(__name__)
 
@@ -110,11 +116,21 @@ def add_bart_schedule(schedule: Schedule, fetch_from_url: bool = False) -> None:
 def app_main():
     app.run(host="0.0.0.0", debug=False, use_reloader=False, use_evalex=False)
 
+def start_loading_info():
+    loading_root: Loading = Loading()
+    loading_root.mainloop()
+
 if __name__ == "__main__":
+
+    loading_process = multiprocessing.Process(target=start_loading_info)
+    loading_process.start()
+
     schedule: Schedule = get_schedule()
     #gtfs.update_gtfs_db(schedule)
     stop_list: list[dict[str, str]] = get_stops_info(schedule)
     stop_trip_info: dict[str, StopTripData] = default_stop_trip_info(schedule)
+
+    loading_process.terminate()
 
     #app_main()
     app_thread = threading.Thread(target=app_main)

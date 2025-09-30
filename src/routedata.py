@@ -21,7 +21,7 @@ class BartRouteData:
     @staticmethod
     def car_lengths(route_id: str) -> int:
         if route_id == "1" or route_id == "2":
-            return 8
+            return 9
         if route_id == "19" or route_id == "20":
             return 2
         return 6
