@@ -53,14 +53,15 @@ def put_stop(stop_id: str = None):
         "stop_id": root.watched_stop
     })
 
-@app.post("/update-bart-gtfs/")
-def post_update_bart_gtfs():
-    gtfs.update_gtfs_db(schedule)
-    return jsonify(
-        {
-            "updated": True
-        }
-    )
+#@app.post("/update-bart-gtfs/")
+#def post_update_bart_gtfs():
+#
+#    gtfs.update_gtfs_db(schedule)
+#    return jsonify(
+#        {
+#            "updated": True
+#        }
+#    )
 
 def get_schedule() -> Schedule:
     schedule: Schedule = pygtfs.Schedule("gtfs.sqlite")
@@ -130,7 +131,7 @@ if __name__ == "__main__":
     loading_process.start()
 
     schedule: Schedule = get_schedule()
-    #gtfs.update_gtfs_db(schedule)
+    gtfs.update_gtfs_db(schedule)
     stop_list: list[dict[str, str]] = get_stops_info(schedule)
     stop_trip_info: dict[str, StopTripData] = default_stop_trip_info(schedule)
 

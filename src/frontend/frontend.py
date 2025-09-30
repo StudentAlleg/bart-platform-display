@@ -54,8 +54,8 @@ class Frontend(tkinter.Tk):
         self.submit_button = ttk.Button(self, text="Submit", command=self.submit)
         self.submit_button.grid(column=0, row=3, columnspan=4, sticky=tkinter.W)
 
-        self.refetch_button = ttk.Button(self, text="Refetch GTFS Data", command=self.refetch)
-        self.refetch_button.grid(column=0, row=4, columnspan=4, sticky=tkinter.W)
+        #self.refetch_button = ttk.Button(self, text="Refetch GTFS Data", command=self.refetch)
+        #self.refetch_button.grid(column=0, row=4, columnspan=4, sticky=tkinter.W)
 
         self.title("Bart Display Controller")
 
