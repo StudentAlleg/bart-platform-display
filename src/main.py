@@ -117,8 +117,12 @@ def app_main():
     app.run(host="0.0.0.0", debug=False, use_reloader=False, use_evalex=False)
 
 def start_loading_info():
-    loading_root: Loading = Loading()
-    loading_root.mainloop()
+    try:
+        loading_root: Loading = Loading()
+        loading_root.mainloop()
+    except TclError as e:
+        print(f"{e}", sys.stderr)
+        time.sleep(1)
 
 if __name__ == "__main__":
 
