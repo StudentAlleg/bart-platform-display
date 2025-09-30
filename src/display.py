@@ -13,9 +13,9 @@ from utiltime import UtilTime
 
 BART_TRIP_UPDATE: str = 'https://api.bart.gov/gtfsrt/tripupdate.aspx'
 FONT: str = "Helvetica" #"Comic Sans MS"
-SMALL_FRONT_SIZE: int = 56
-DESCRIPTION_FONT_SIZE: int = 72
-ARRIVAL_FONT_SIZE: int = 96
+SMALL_FRONT_SIZE: int = 48
+DESCRIPTION_FONT_SIZE: int = 68
+ARRIVAL_FONT_SIZE: int = 80
 
 class Display(tkinter.Tk):
 
