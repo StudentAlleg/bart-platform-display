@@ -1,6 +1,9 @@
 import datetime
 import faulthandler
+import sys
 import threading
+import time
+from tkinter import TclError
 
 import pygtfs
 import requests
@@ -105,17 +108,24 @@ def add_bart_schedule(schedule: Schedule, fetch_from_url: bool = False) -> None:
     pygtfs.append_feed(schedule, BART_GTFS_FILE)
 
 def app_main():
-    app.run(host="0.0.0.0",debug=False, use_reloader=False, use_evalex=False)
+    app.run(host="0.0.0.0", debug=False, use_reloader=False, use_evalex=False)
 
 if __name__ == "__main__":
     schedule: Schedule = get_schedule()
     #gtfs.update_gtfs_db(schedule)
     stop_list: list[dict[str, str]] = get_stops_info(schedule)
     stop_trip_info: dict[str, StopTripData] = default_stop_trip_info(schedule)
-    root: Display = Display(watched_stop, schedule, stop_trip_info)
+
     #app_main()
     app_thread = threading.Thread(target=app_main)
     app_thread.daemon = True
     app_thread.start()
-    root.mainloop()
+    while True:
+        try:
+            root: Display = Display(watched_stop, schedule, stop_trip_info)
+            root.mainloop()
+        except TclError as e:
+            print(f"{e}", sys.stderr)
+            time.sleep(1)
+
 
