@@ -13,4 +13,4 @@ def update_gtfs_db(schedule: Schedule):
         if response.status_code == 200:
             with open(BART_GTFS_FILE, "wb") as file:
                 file.write(response.content)
-    pygtfs.append_feed(schedule, BART_GTFS_FILE)
+    pygtfs.overwrite_feed(schedule, BART_GTFS_FILE)

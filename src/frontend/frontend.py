@@ -23,6 +23,7 @@ class Frontend(tkinter.Tk):
     stop_selector_box: ttk.Combobox
 
     submit_button: ttk.Button
+    refetch_button: ttk.Button
 
     def __init__(self):
         super().__init__()
@@ -52,6 +53,9 @@ class Frontend(tkinter.Tk):
 
         self.submit_button = ttk.Button(self, text="Submit", command=self.submit)
         self.submit_button.grid(column=0, row=3, columnspan=4, sticky=tkinter.W)
+
+        self.refetch_button = ttk.Button(self, text="Refetch GTFS Data", command=self.refetch)
+        self.refetch_button.grid(column=0, row=4, columnspan=4, sticky=tkinter.W)
 
         self.title("Bart Display Controller")
 
@@ -102,6 +106,12 @@ class Frontend(tkinter.Tk):
 
     def get_stop_id_from_selector(self) -> str:
         return self.stop_id_var.get().split(" (")[0]
+
+    def refetch(self):
+        response: requests.Response = requests.post(self.get_url("update-bart-gtfs"))
+        if response.status_code != 200:
+            showwarning(f"Error: {response.status_code}", f"{response.content}")
+        self.stop_list = json.loads(response.content)
 
 
 
