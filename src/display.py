@@ -46,6 +46,7 @@ class Display(tkinter.Tk):
         #self.overrideredirect(True)
         self.configure(background="black")
         self.attributes("-fullscreen", True)
+        self.attributes("-zoomed", True)
         self.config(cursor="none")
 
         self.columnconfigure(0, weight=1)
@@ -88,10 +89,6 @@ class Display(tkinter.Tk):
 
             with requests.get(BART_TRIP_UPDATE, allow_redirects=True) as response:
                 feed.ParseFromString(response.content)
-                #todo remove
-                f = open("../feed.txt", "w")
-                f.write(str(feed))
-                f.close()
                 for entity in feed.entity:
                     if entity.HasField("trip_update"):
                         if hasattr(entity.trip_update, "stop_time_update"):

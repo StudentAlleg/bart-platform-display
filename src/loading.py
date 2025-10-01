@@ -33,6 +33,7 @@ class Loading(tkinter.Tk):
         #self.overrideredirect(True)
         self.configure(background="black")
         self.attributes("-fullscreen", True)
+        self.attributes("-zoomed", True)
         self.config(cursor="none")
 
         self.loading_text = StringVar()
