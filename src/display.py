@@ -45,7 +45,7 @@ class Display(tkinter.Tk):
 
         #self.overrideredirect(True)
         self.configure(background="black")
-        #self.attributes("-fullscreen", True)
+        self.attributes("-fullscreen", True)
         self.config(cursor="none")
 
         self.columnconfigure(0, weight=1)
