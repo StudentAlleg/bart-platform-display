@@ -4,7 +4,6 @@ import multiprocessing
 import sys
 import threading
 import time
-import tkinter
 from tkinter import TclError
 
 import pygtfs
@@ -64,9 +63,7 @@ def put_stop(stop_id: str = None):
 #    )
 
 def get_schedule() -> Schedule:
-    schedule: Schedule = pygtfs.Schedule(":memory:")
-
-    gtfs.update_gtfs_db(schedule)
+    schedule: Schedule = pygtfs.Schedule("gtfs.sqlite")
     #add_bart_schedule(schedule, True)
     return schedule
 
@@ -133,6 +130,7 @@ if __name__ == "__main__":
     loading_process.start()
 
     schedule: Schedule = get_schedule()
+    gtfs.update_gtfs_db(schedule)
     stop_list: list[dict[str, str]] = get_stops_info(schedule)
     stop_trip_info: dict[str, StopTripData] = default_stop_trip_info(schedule)
 
