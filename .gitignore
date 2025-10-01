@@ -7,3 +7,8 @@ data
 feed.txt
 *.sqlite
 *.service
+*/build/*
+src/frontend/build
+src/frontend/dist
+*.spec
+.wslenv
